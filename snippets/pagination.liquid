@@ -1,0 +1,35 @@
+{% if paginate.pages > 0 %}
+     <nav role="navigation" class="flex justify-center my-8 space-x-4">
+        {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}" 
+               class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+               Previous
+            </a>
+          {% else %}
+            <span class="bg-gray-400 text-white px-4 py-2 rounded-md cursor-not-allowed opacity-70">
+               Previous
+            </span>
+          {% endif %}
+          {% for part in paginate.parts %}
+            {% if part.url %}
+              <a href="{{ part.url }}" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                {{ part.title }}
+              </a>
+            {% else %}
+              <span class="bg-gray-400 text-white px-4 py-2 rounded-md cursor-not-allowed opacity-70">
+                {{ part.title }}
+              </span>
+            {% endif %}
+          {% endfor %}
+         {% if paginate.next %}
+            <a href="{{ paginate.next.url }}" 
+               class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+               Next
+            </a>
+          {% else %}
+            <span class="bg-gray-400 text-white px-4 py-2 rounded-md cursor-not-allowed opacity-70">
+               Next
+            </span>
+          {% endif %}
+     </nav>
+{% endif %}

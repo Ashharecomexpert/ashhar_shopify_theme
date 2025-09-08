@@ -1,0 +1,33 @@
+{% paginate collection.products by {{section.settings.products_per_page}} %}
+
+
+<h1 class="text-3xl font-bold text-center">{{collection.title}}</h1>
+<div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {% for product in collection.products %}
+         {% render 'product-card', product: product %}
+        {% else %}
+        <p>No products found</p>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% render 'pagination', paginate: paginate %}
+
+{% endpaginate %}
+
+
+{% schema %}
+{
+    "name": "Template Collection",
+    "settings": [
+        {
+            "type": "number",
+            "id": "products_per_page",
+            "label": "Products per page",
+            "default": 6
+        }
+    ]
+}
+{% endschema %}
