@@ -1,9 +1,16 @@
-{%  assign selected_variant = product.selected_or_first_available_variant %}
+<link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+
 <style>
+    .swiper-button-prev, .swiper-button-next { color: black; top: auto !important; height: 20px; }
+    .swiper-button-prev::after, .swiper-button-next::after { font-size: 20px; }
+    .swiper-pagination { color: black; bottom: 0 !important; }
+    .swiper-pagination-bullet-active { background: black !important; }
     .product--info{
         height:fit-content;
     }
 </style>
+{%  assign selected_variant = product.selected_or_first_available_variant %}
 <div class="max-w-6xl mx-auto my-8">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div class="product--medias">
@@ -16,7 +23,7 @@
             </div>
 
             <div class="md:hidden">
-                <div class="swiper h-94">
+                <div class="swiper h-90">
                     <div class="swiper-wrapper">
                         {% for media in product.media %}
                             <div class="swiper-slide">
@@ -123,7 +130,20 @@
         </div>
     </div>
 </div>
+<script>
+    const swiper = new Swiper('.swiper', {
+        direction: 'horizontal',
 
+        pagination: {
+            el: '.swiper-pagination'
+        },
+
+        navigation: {
+            prevEl: '.swiper-button-prev',
+            nextEl: '.swiper-button-next'
+        }
+    })
+</script>
 
 {% schema %}
     {
