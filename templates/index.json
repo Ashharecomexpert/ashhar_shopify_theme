@@ -1,11 +1,41 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-    "sections":{
-        "featured-collection":{
-            "type":"featured-collection",
-            "settings": {
-                "featured_collections": "all"
-            }
-        }
+  "sections": {
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured Collection",
+        "featured_collections": "all"
+      }
     },
-    "order":["featured-collection"]
+    "featured_collection_GWDGgz": {
+      "type": "featured-collection",
+      "name": "Featured Collection",
+      "settings": {
+        "title": "Best seller",
+        "featured_collections": "crossbones"
+      }
+    },
+    "featured_collection_nk89V9": {
+      "type": "featured-collection",
+      "name": "Featured Collection",
+      "settings": {
+        "title": "Summer Sale",
+        "featured_collections": "summer-sale"
+      }
+    }
+  },
+  "order": [
+    "featured-collection",
+    "featured_collection_GWDGgz",
+    "featured_collection_nk89V9"
+  ]
 }
