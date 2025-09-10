@@ -9,7 +9,19 @@
     {% when 'video' %}
        {{media | video_tag:controls: true, class: 'w-full h-full object-cover' }}
     {% when 'model' %}
-       {{media | model_viewer_tag: class: 'w-full h-90 object-cover' }}
+      <product-modal data-media-id="{{media.id}}">
+         <div>
+            <button id="productModalButton-{{media.id}}" x-on:click="productModalOpen = true" class="w-full h-full bg-gray-100 border relative">
+               <span class="border bg-gray-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                  {% render 'icon-modal-view' %}
+               </span>
+               <img class="w-full h-full" src="{{media | image_url: width: 400}}" alt="{{media.preview_image.alt}}" width="" height="">
+            </button>
+         </div>
+         <template>
+            {{media | model_viewer_tag: reveal: 'interaction'}}
+         </template>
+      </product-modal>
     {% else %}
       {{media |  media_tag}}
 {% endcase %}
