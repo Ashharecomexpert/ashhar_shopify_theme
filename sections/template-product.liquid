@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css">
 <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js" defer></script>
 <script src="{{'product-modal.js' | asset_url}}" defer></script>
 <style>
     .swiper-button-prev, .swiper-button-next { color: black; top: auto !important; height: 20px; }
@@ -59,12 +59,19 @@
                                     <h1 class="text-3xl text-gray-900">{{ product.title }}</h1>
                                 </div>
                             {% when 'price' %}
-                                <div class="my-3">
+                                <div class="my-3" id="price-{{ section.id }}">
                                     <span class="text-base text-gray-500 line-through">{{ selected_variant.compare_at_price | money }}</span>
                                     <span class="text-lg text-gray-900">{{ selected_variant.price | money }}</span>
 
                                     {% if selected_variant.price < selected_variant.compare_at_price %}
                                         <span class="px-5 py-1 text-sm font-bold bg-red-500 rounded-full text-white mx-4">Sale</span>
+                                    {% endif %}
+                                </div>
+                                <div class="my-3" id="inventory-{{ section.id }}">
+                                    {% if selected_variant.inventory_quantity > 10 %}
+                                    <span class="text-lg font-medium"><span class="w-4 h-4 bg-green-500 rounded-full inline-block mr-2"></span>{{selected_variant.inventory_quantity}} in stock</span>
+                                    {% else %}
+                                    <span class="text-lg font-medium"><span class="w-4 h-4 bg-red-500 rounded-full inline-block mr-2"></span>{{selected_variant.inventory_quantity}} in stock</span>
                                     {% endif %}
                                 </div>
                             {% when 'variant_selector' %}
@@ -121,7 +128,7 @@
                                         {% endif %}
                                     >
                                         {% if selected_variant.available == false %}
-                                            Sold out
+                                            Sold sfsfsf
                                         {% else %}
                                             Add to cart
                                         {% endif %}
@@ -178,6 +185,7 @@
                 this.updateUrl()
                 this.updateFormId()
                 this.updatePrice()
+                this.updateInventory()
             } 
         }
         getSelectedOptions(){
@@ -204,9 +212,11 @@
             form_input.value = this.currentVariant.id;
         }
         updatePrice() {
-           fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
+              fetch(`${window.location.pathname}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
+        //    fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
            .then((response) => response.text())
            .then((responseText) => {
+            console.log(responseText)
             const id = `price-${this.dataset.section}`;
             const html = new DOMParser().parseFromString(responseText, 'text/html');
             const oldPrice = document.getElementById(id);
@@ -214,6 +224,20 @@
             if(oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
            })
         }
+        updateInventory() {
+    fetch(
+      `${window.location.pathname}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`
+    )
+      .then((response) => response.text())
+      .then((responseText) => {
+        const id = `inventory-${this.dataset.section}`;
+        const html = new DOMParser().parseFromString(responseText, "text/html");
+        const oldInventory = document.getElementById(id);
+        const newInventory = html.getElementById(id);
+        if (oldInventory && newInventory)
+          oldInventory.innerHTML = newInventory.innerHTML;
+      });
+  }
     }
     customElements.define('variant-selector', VariantSelector)
 
