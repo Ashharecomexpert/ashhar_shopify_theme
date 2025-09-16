@@ -6,5 +6,26 @@
     "theme_author": "Shopify",
     "theme_documentation_url": "https://github.com/Shopify/themekit",
     "theme_support_url": "https://github.com/Shopify/themekit/issues"
+  },
+  {
+    "name": "Cart Settings",
+    "settings":[
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart Type",
+        "options": [
+          {
+            "value": "page",
+            "label": "Cart Page"
+          },
+          {
+            "value": "drawer",
+            "label": "Cart Drawer"
+          }
+        ],
+        "default": "page"
+      }
+    ]
   }
 ]

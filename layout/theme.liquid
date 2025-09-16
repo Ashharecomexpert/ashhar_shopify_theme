@@ -12,14 +12,181 @@
     {{ 'application.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'application.js' | asset_url }}" defer></script>
     <script src="{{ 'alpine.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'custom-cart-drawer.js' | asset_url }}" defer></script>
     <style>
       [x-cloak] {
         display: none !important;
       }
+      /* DRAWER */
+
+.custom-cart-drawer-open {
+  overflow: hidden;
+}
+
+.custom-cart-drawer-container {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  transition:
+    visibility 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
+}
+
+.custom-cart-drawer-container[open] {
+  visibility: visible;
+  opacity: 1;
+}
+
+.custom-cart-drawer {
+  padding: 10px;
+}
+
+.custom-cart-drawer-overlay {
+  display: block !important;
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition:
+    visibility 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
+}
+
+.custom-cart-drawer-container[open] .custom-cart-drawer-overlay {
+  visibility: visible;
+  opacity: 1;
+}
+
+.custom-cart-drawer {
+  position: fixed;
+  background-color: white;
+  z-index: 10;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 470px;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.custom-cart-drawer-container[open] .custom-cart-drawer {
+  transform: translateX(0);
+}
+
+.custom-cart-drawer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.custom-cart-drawer__header h2,
+.custom-cart-drawer__header h3 {
+  margin: 0;
+}
+
+.custom-cart-drawer__close {
+  margin-bottom: 0;
+  background: white;
+    border: none;
+}
+.custom-cart-drawer__close svg{
+  width:20px;
+  height:20px;
+}
+.custom-cart-drawer__item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.custom-cart-drawer__item-info-wrapper {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.custom-cart-drawer__items {
+  display: grid;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.custom-cart-drawer__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.custom-cart-drawer__item-title {
+  margin: 0;
+}
+
+.custom-cart-drawer__item-image {
+  flex-shrink: 0;
+  width: 75px;
+  height: 75px;
+}
+
+.custom-cart-drawer__footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.custom-cart-drawer__footer .button {
+  width: 100%;
+}
+
+.custom-cart-drawer .quantity {
+  min-height: 0;
+}
+
+.custom-cart-drawer__item-actions .link {
+  width: 100%;
+  text-align: right;
+}
+
+.custom-cart-drawer__note {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.custom-cart-drawer .cart-empty {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+}
+button.quantity-button svg,
+button.custom-cart-drawer__item-remove svg {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
     </style>
   </head>
   <body class="">
     {% section 'header' %}
+    {% render 'custom-cart-drawer' %}
     <main role="main">
       {{ content_for_layout }}
     </main>

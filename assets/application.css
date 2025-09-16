@@ -16,6 +16,7 @@
     --color-green-700: oklch(52.7% 0.154 150.069);
     --color-green-800: oklch(44.8% 0.119 151.328);
     --color-blue-100: oklch(93.2% 0.032 255.585);
+    --color-blue-300: oklch(80.9% 0.105 251.813);
     --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-blue-600: oklch(54.6% 0.245 262.881);
     --color-blue-700: oklch(48.8% 0.243 264.376);
@@ -270,8 +271,17 @@
   .top-20 {
     top: calc(var(--spacing) * 20);
   }
+  .top-\[-10px\] {
+    top: -10px;
+  }
+  .right-0 {
+    right: calc(var(--spacing) * 0);
+  }
   .right-5 {
     right: calc(var(--spacing) * 5);
+  }
+  .right-\[-5px\] {
+    right: -5px;
   }
   .bottom-20 {
     bottom: calc(var(--spacing) * 20);
@@ -436,9 +446,6 @@
     width: calc(var(--spacing) * 6);
     height: calc(var(--spacing) * 6);
   }
-  .h-2 {
-    height: calc(var(--spacing) * 2);
-  }
   .h-4 {
     height: calc(var(--spacing) * 4);
   }
@@ -475,9 +482,6 @@
   .w-1\/2 {
     width: calc(1/2 * 100%);
   }
-  .w-2 {
-    width: calc(var(--spacing) * 2);
-  }
   .w-4 {
     width: calc(var(--spacing) * 4);
   }
@@ -511,11 +515,20 @@
   .max-w-7xl {
     max-width: var(--container-7xl);
   }
+  .max-w-\[470px\] {
+    max-width: 470px;
+  }
+  .max-w-lg {
+    max-width: var(--container-lg);
+  }
   .max-w-md {
     max-width: var(--container-md);
   }
   .flex-1 {
     flex: 1;
+  }
+  .flex-shrink {
+    flex-shrink: 1;
   }
   .table-auto {
     table-layout: auto;
@@ -700,6 +713,10 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
+  .border-0 {
+    border-style: var(--tw-border-style);
+    border-width: 0px;
+  }
   .border-b {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
@@ -720,8 +737,17 @@
   .border-red-400 {
     border-color: var(--color-red-400);
   }
+  .bg-black {
+    background-color: var(--color-black);
+  }
   .bg-blue-100 {
     background-color: var(--color-blue-100);
+  }
+  .bg-blue-300 {
+    background-color: var(--color-blue-300);
+  }
+  .bg-blue-700 {
+    background-color: var(--color-blue-700);
   }
   .bg-gray-50 {
     background-color: var(--color-gray-50);

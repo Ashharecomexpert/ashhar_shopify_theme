@@ -16,6 +16,10 @@
         <span class="text-sm">{{product.vender}}</span>
         <a class="text-lg font-medium my-2 inline-block uppercase" href="{{product.url}}">{{product.title}}</a>
         <p class="text-gray-500">{{product.price | money}}</p>
+
+       
+       {% render 'atc-button', product: product %}
+
      </div>
        
     </div>

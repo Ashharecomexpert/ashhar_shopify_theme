@@ -1,0 +1,9 @@
+<atc-button>
+  {% form 'product', product %}
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    <input type="hidden" name="quantity" value="1">
+    <button type="submit" class="bg-black border-0 px-5 py-3 mt-2 text-white rounded-md w-full">
+      Add to Cart
+    </button>
+  {% endform %}
+</atc-button>

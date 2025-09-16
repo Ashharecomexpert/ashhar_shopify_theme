@@ -1,0 +1,13 @@
+{% if settings.cart_type == 'page' %}
+<a href="{{routes.cart_url}}" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900 relative relative" id="cart-icon-bubble">
+    {% render 'icon-shopping-bag' %}
+    <span class="cart-item-count absolute top-[-10px] right-[-5px] text-green-500">{{ cart.items.size }}</span>
+</a>
+
+{% else %}
+
+<div class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900 relative" id="cart-icon-bubble">
+    {% render 'icon-shopping-bag' %}
+    <span class="cart-item-count absolute top-[-10px] right-[-5px] text-green-500">{{ cart.items.size }}</span>
+</div>
+{% endif %}

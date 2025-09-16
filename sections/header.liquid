@@ -65,9 +65,7 @@
                 <button x-on:click="searchOpen = true" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
                     {% render 'icon-search' %}
                 </button>
-                <a href="{{routes.cart_url}}" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
-                    {% render 'icon-shopping-bag' %}
-                </a>
+             {% render 'shopping-cart' %}
                 {% if shop.customer_accounts_enabled %}
                     {% if customer %}
                         <a href="{{ routes.account_url }}" class="text-base text-gray-500 hover:text-gray-900">account</a>

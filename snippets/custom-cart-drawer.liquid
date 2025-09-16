@@ -1,0 +1,54 @@
+<custom-cart-drawer data-open-trigger="cart-icon-bubble" class="custom-cart-drawer-container">
+    <div id="CustomCartOverlay" class="custom-cart-drawer-overlay"></div>
+    <div class="custom-cart-drawer">
+        <div class="custom-cart-drawer__header">
+            <h2 class="text-3xl font-bold">Cart</h2>
+            <button data-close class="custom-cart-drawer__close">
+                {% render 'icon-close' %}
+            </button>
+        </div>
+
+        <div class="custom-cart-drawer__inner">
+            {% if cart.items.size > 0 %}
+            <div class="custom-cart-drawer__content">
+                <div class="custom-cart-drawer__items">
+                    {% for item in cart.items %}
+                    <div class="custom-cart-drawer__item" data-line="{{ forloop.index }}">
+                        <div class="custom-cart-drawer__item-info-wrapper">
+                            <div class="custom-cart-drawer__item-image border">
+                               <img src="{{ item.image | image_url: width: 75 }}" alt="{{ item.product.title }}" class="w-full h-full object-cover">
+                            </div>
+
+                            <div class="custom-cart-drawer__item-info">
+                                <h5 class="custom-cart-drawer__item-title font-medium"><a href="{{ item.url }}">{{ item.title }}</a></h5>
+                                <span class="custom-cart-drawer__item-price">{{ item.price | money }}</span>
+                            </div>
+                            <cart-actions class="ml-auto flex items-center gap-2" data-line="{{ forloop.index }}">
+                        
+                                <div class="custom-cart-drawer__item-quantity flex items-center gap-2">
+                                    <button data-quantity="{{ item.quantity | minus: 1 }}" data-minus class="custom-cart-drawer__item quantity-button bg-gray-200 rounded-md p-2">{% render 'icon-minus' %}</button>
+                                    <span>{{ item.quantity }}</span>
+                                    <button data-quantity="{{ item.quantity | plus: 1 }}" data-plus class="custom-cart-drawer__item quantity-button bg-gray-200 rounded-md p-2">{% render 'icon-plus' %}</button>
+                                </div>
+                                <button data-quantity="0" data-remove class="custom-cart-drawer__item-remove text-red-500">{% render 'icon-remove' %}</button>
+                            </cart-actions>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="custom-cart-drawer__footer">
+                <h3>Total: {{ cart.total_price | money }}</h3>
+                <button class="px-6 py-2 bg-black text-white rounded-md w-full mb-2">Checkout</button>
+                <a href="{{routes.cart_url}}" class="px-6 py-2 bg-blue-700 text-white text-center rounded-md block w-full">View Cart</a>
+            </div>
+            {% else %}
+            <div class="cart-empty">
+                <h3>Your cart is empty</h3>
+                <p>Add some products to your cart to get started.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</custom-cart-drawer>
