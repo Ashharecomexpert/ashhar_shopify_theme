@@ -33,6 +33,7 @@
     --color-white: #fff;
     --spacing: 0.25rem;
     --container-md: 28rem;
+    --container-lg: 32rem;
     --container-2xl: 42rem;
     --container-4xl: 56rem;
     --container-6xl: 72rem;
@@ -271,6 +272,9 @@
   }
   .right-5 {
     right: calc(var(--spacing) * 5);
+  }
+  .bottom-20 {
+    bottom: calc(var(--spacing) * 20);
   }
   .left-0 {
     left: calc(var(--spacing) * 0);
