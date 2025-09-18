@@ -21,7 +21,9 @@
 
                             <div class="custom-cart-drawer__item-info">
                                 <h5 class="custom-cart-drawer__item-title font-medium"><a href="{{ item.url }}">{{ item.title }}</a></h5>
-                                <span class="custom-cart-drawer__item-price">{{ item.price | money }}</span>
+                                <span
+                                class="bg-gray-500 text-white px-2 py-1 w-fit rounded-md text-sm my-1">{{item.variant.title}}</span>
+                                <span class="custom-cart-drawer__item-price text-lg font-bolds">{{ item.price | money }}</span>
                             </div>
                             <cart-actions class="ml-auto flex items-center gap-2" data-line="{{ forloop.index }}">
                         
@@ -39,9 +41,9 @@
                 </div>
             </div>
             <div class="custom-cart-drawer__footer">
-                <h3>Total: {{ cart.total_price | money }}</h3>
+                <h3 class="text-2xl font-bold my-1">Total: {{ cart.total_price | money }}</h3>
                 <button class="px-6 py-2 bg-black text-white rounded-md w-full mb-2">Checkout</button>
-                <a href="{{routes.cart_url}}" class="px-6 py-2 bg-blue-700 text-white text-center rounded-md block w-full">View Cart</a>
+                {% comment %} <a href="{{routes.cart_url}}" class="px-6 py-2 bg-blue-700 text-white text-center rounded-md block w-full">View Cart</a> {% endcomment %}
             </div>
             {% else %}
             <div class="cart-empty">

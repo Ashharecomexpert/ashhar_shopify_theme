@@ -1,0 +1,127 @@
+<script src="{{ 'variant-picker.js' |  asset_url }}" defer></script>
+{% style %}
+    .product-form_option-values input {
+    display: none;
+}
+
+.product-form_option-values label {
+    border: 1px solid black;
+    padding: .4rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+}
+.product-form_option-values {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+variant-picker.my-5 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.product-form_option-values input:checked+label{
+    background-color: black;
+    color: white;
+}
+.is-out-of-stock{
+    opacity: 0.5;
+    pointer-events: none;
+    position: relative;
+    z-index: 1;
+
+}
+.product-form_option-values.is-color label{
+   width:40px;
+   height:40px;
+   border-radius: 50%;
+   border:1px solid black;
+   cursor: pointer;
+   display: block;
+}
+.product-form_option-values.is-color input:checked+label{
+    border:5px solid black;
+}
+{% endstyle %}
+<section class="swatches-product-section">
+    <div class="max-w-6xl mx-auto py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="product-media">
+                {% if product.has_only_default_variant %}
+                    <img class="default-image w-full" src="{{ product.featured_image | image_url: width: 1000 }}" alt="{{ product.featured_image.alt }}" width="" height="">
+                {% else %}
+                <img 
+                class="selected-image w-full" 
+                src="{{ product.selected_or_first_available_variant.featured_image | image_url: width: 1000 }}" 
+                alt="{{ product.selected_or_first_available_variant.featured_image.alt | escape }}" 
+                width="" 
+                height="">
+              
+                {% endif %}
+            </div>
+            <div class="product-information p-5">
+                <div class="product-infomation__content">
+                    <h1 class="text-5xl font-bold my-5">{{ product.title }}</h1>
+                    <div class="product-info__price_container flex items-center gap-2 my-5">
+                        {% if product.selected_or_first_available_variant.compare_at_price >  product.selected_or_first_available_variant.price %}
+                             <span class="text-red-500  line-through text-lg">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+                        {% endif %}
+                        <span class="text-2xl text-black font-bold">{{ product.selected_or_first_available_variant.price | money }}</span>
+                    </div>
+                    {%  unless product.has_only_default_variant  %} 
+                        <variant-picker class="my-5" data-section-id="{{section.id}}">
+                            {% for option in product.options_with_values %}
+                                 <fieldset class="product-form_option">
+                                     <legend class="product-form_option-name">{{ option.name }}</legend>
+                                     <div class="product-form_option-values {% if option.name == 'Color' %}is-color{% endif %}">
+                                        {% for value in option.values %}
+                                            {% if option.name == 'Color' %}
+                                                <div class="product-form_option-value {% unless value.variant.available %}is-out-of-stock{% endunless %}">
+                                                    <input type="radio" value="{{ value.variant.id }}" id="{{ option.name }}-{{ value.name }}" name="{{option.name}}"
+                                                    {% if option.selected_value == value %}checked{% endif %}/>
+                                                    <label for="{{ option.name }}-{{ value.name }}" style="background-color:{{value.swatch.color}}"></label>
+                                                </div>
+                                            {% else %}
+                                            <div class="product-form_option-value {% unless value.variant.available %}is-out-of-stock{% endunless %}">
+                                             <input type="radio" value="{{ value.variant.id }}" id="{{ option.name }}-{{ value.name }}" name="{{option.name}}"
+                                            {% if option.selected_value == value %}checked{% endif %}/>
+                                             <label for="{{ option.name }}-{{ value.name }}">{{ value.name }}</label>
+                                            </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                     </div>
+                                 </fieldset>
+                            {% endfor %}
+                        </variant-picker>
+                    {% endunless %}
+                    <div>
+                        {% form 'product', product %}
+                            {% comment %} <variant-picker class="my-5" data-section-id="{{section.id}}">
+                                <select name="id" class="w-full border px-3 py-3">
+                                 {% for variant in product.variants %}
+                                     <option value="{{ variant.id }}" {% if variant.id == product.selected_or_first_available_variant.id %}selected{% endif %}>
+                                         {{ variant.title }}
+                                     </option>
+                                 {% endfor %}
+                                </select>
+                             </variant-picker> {% endcomment %}
+                             <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" />
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" 
+                            class="w-full px-6 py-4 bg-black text-white hover:bg-gray-700 rounded-lg font-medium uppercase  my-2">
+                               {% if product.selected_or_first_available_variant.available %}
+                                    Add to Cart
+                               {% else %}
+                                    Sold Out
+                               {% endif %}
+                            </button>
+                        {% endform %}
+
+                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

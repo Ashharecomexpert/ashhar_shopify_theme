@@ -20,7 +20,10 @@
                 "description",
                 "checkout_buttons"
             ]
+        },
+        "custom-template":{
+            "type": "template-swatches-product"
         }
     },
-    "order": ["template"]
+    "order": ["template","custom-template"]
 }

@@ -182,11 +182,37 @@ button.custom-cart-drawer__item-remove svg {
     height: 15px;
     cursor: pointer;
 }
+.collection_aside {
+  position: sticky;
+  top: 20px; /* adjust for header height */
+  height: fit-content;
+  align-self: flex-start; /* prevents it from stretching full height */
+}
+.collection-filters_option.is-disabled{
+  opacity: .4;
+  pointer-events: none;
+}
+.collection-filters_color input {
+    display: none;
+}
+.collection-filters_color label{
+  padding:1rem;
+  border-radius: 50%;
+  border:1px solid black;
+  cursor: pointer;
+}
+.collection-filters_color input:checked label {
+    background-color: black;
+    color:#fff;;
+}
     </style>
   </head>
   <body class="">
     {% section 'header' %}
-    {% render 'custom-cart-drawer' %}
+    {%  unless settings.cart_type == 'drawer' %}
+      {% render 'custom-cart-drawer' %}
+    {% endunless %}
+    
     <main role="main">
       {{ content_for_layout }}
     </main>

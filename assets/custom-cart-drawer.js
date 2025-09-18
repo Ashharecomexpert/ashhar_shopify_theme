@@ -152,3 +152,46 @@ class CartActions extends HTMLElement {
 }
 
 customElements.define('cart-actions', CartActions)
+
+
+
+// class CartPageActions extends HTMLElement {
+//   constructor(){
+//     super();
+//     this.plusButton = this.querySelector("[data-plus]");
+//     this.minusButton = this.querySelector("[data-minus]");
+//     this.removeButton = this.querySelector("[data-remove]");
+//   }
+
+//   connectedCallback(){
+//      this.plusButton?.addEventListener('click', this.handleChange.bind(this));
+//      this.minusButton?.addEventListener('click', this.handleChange.bind(this))
+//      this.removeButton?.addEventListener('click', this.handleChange.bind(this))
+//   }
+//   handleChange(event){
+//     const formData ={
+//       'line': parseInt(this.dataset.line, 10),
+//       'quantity': parseInt(event.currentTarget.dataset.quantity, 10),
+//       'sections': "custom-cart-count",
+//       'sections_url': window.location.pathname
+//     };
+//     fetch(window.Shopify.routes.root + 'cart/change.js', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(formData)
+//     })
+//       .then(response => {
+//         return response.json();
+//       })
+//       .then(data => {
+//         console.log(data);
+//       })
+//       .catch((error) => {
+//         console.error('Error:', error);
+//       }); 
+//     }
+//   }
+
+// customElements.define('cart-page-actions', CartPageActions)

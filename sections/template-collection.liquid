@@ -1,33 +1,157 @@
-{% paginate collection.products by {{section.settings.products_per_page}} %}
+<script src="{{ 'collection-filters.js' | asset_url }}" defer></script>
 
+{% paginate collection.products by section.settings.products_per_page %}
 
-<h1 class="text-3xl font-bold text-center">{{collection.title}}</h1>
-<div class="max-w-6xl mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {% for product in collection.products %}
-         {% render 'product-card', product: product %}
-        {% else %}
-        <p>No products found</p>
-        {% endfor %}
+<h1 class="text-3xl font-bold text-center mb-6">{{ collection.title }}</h1>
+
+<div class="max-w-8xl mx-auto px-2">
+  <div class="flex gap-6 collections_inner">
+    
+    <!-- Sidebar Filters -->
+    <div class="collection_aside w-full md:w-[300px] max-w-[300px] flex-shrink-0">
+      <collection-filters class="collection" data-section-id="{{section.id}}">
+        <div class="collection-filters_heading mb-4">
+          <h2 class="text-2xl font-bold">Filters</h2>
+        </div>
+
+        <div class="collection-filters_active_value mb-2">
+          {% for filter in collection.filters %}
+            {% for value in filter.active_values %}
+              <div class="inline-block bg-black text-sm text-white px-2 py-1 rounded-md my-1">
+                <input type="hidden"
+                  id="{{filter.label | handle}}-{{value.value | handle}}"
+                  name="{{filter.label | handle}}"
+                  value="{{value.value | handle}}"
+                  data-remove-url="{{value.url_to_remove}}" />
+                <label for="{{filter.label | handle}}-{{value.value | handle}}">{{value.label}} X</label>
+              </div>
+            {% endfor %}
+          {% endfor %}
+        </div>
+
+        <div class="collection-filters_content space-y-4">
+          {% for filter in collection.filters %}
+            {% if filter.label != 'Color' %}
+              <div class="collection-filters_filter mt-2">
+                <div class="collection-filters_label font-semibold mb-1">
+                  {{ filter.label }}
+                </div>
+
+                <div class="collection-filters_options space-y-1">
+                  {% if filter.type == 'list' or filter.type == 'boolean' %}
+                    {% for value in filter.values %}
+                      <div class="collection-filters_option {% if value.count == 0 %} is-disabled {% endif %}">
+                        <input type="checkbox"
+                          id="{{filter.label | handle}}-{{value.value | handle}}"
+                          name="{{filter.label | handle}}"
+                          value="{{value.value | handle}}"
+                          data-add-url="{{value.url_to_add}}"
+                          data-remove-url="{{value.url_to_remove}}"
+                          {% if value.active %}checked{% endif %}/>
+                        <label for="{{filter.label | handle}}-{{value.value | handle}}">{{value.label}}</label>
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    {% if filter.min_value.value %}
+                      {% assign min_value = filter.min_value | divided_by: 100.0 %}
+                    {% else %}
+                      {% assign min_value = 0.0 %}
+                    {% endif %}
+                    {% if filter.max_value.value %}
+                      {% assign max_value = filter.max_value | divided_by: 100.0 %}
+                    {% else %}
+                      {% assign max_value = filter.range_max | divided_by: 100.0 %}
+                    {% endif %}
+                    <div class="collection-filters_option">
+                      <div class="collection_filters_price_range">
+                        <input type="range" 
+                          id="{{filter.min_value.param_name}}"
+                          name="{{filter.min_value.param_name}}"
+                          min="0" 
+                          max="{{filter.range_max | divided_by: 100 | round | plus: 1 }}" 
+                          value="{{min_value}}"
+                          data-param="{{filter.min_value.param_name}}"
+                          data-min-value/>
+
+                        <input type="range"
+                          id="{{filter.max_value.param_name}}"
+                          name="{{filter.max_value.param_name}}"
+                          min="0"
+                          max="{{filter.range_max | divided_by: 100 | round | plus: 1 }}"
+                          value="{{max_value}}"
+                          data-param="{{filter.max_value.param_name}}"
+                          data-max-value/>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% else %}
+              {% comment %} color filter {% endcomment %}
+              <div class="collection-filters_filter collection-filters_color mb-2">
+                <div class="collection-filters_label font-semibold ">
+                  {{ filter.label }}
+                </div>
+                <div class="collection-filters_options flex items-center space-y-1">
+                  {% for value in filter.values %}
+                    <div class="collection-filters_option_item flex gap-2 {% if value.count == 0 %} is-disabled {% endif %}">
+                      <input type="checkbox"
+                        id="{{filter.label | handle}}-{{value.value | handle}}"
+                        name="{{filter.label | handle}}"
+                        value="{{value.value | handle}}"
+                        data-add-url="{{value.url_to_add}}"
+                        data-remove-url="{{value.url_to_remove}}"
+                        {% if value.active %}checked{% endif %}/>
+                      <label class="w-[45px] h-[45px] rounded-full"
+                        {% if value.swatch.color %} 
+                          style="background-color:{{value.swatch.color}}" 
+                        {% elsif value.swatch.image %} 
+                          style="background-image:url({{value.swatch.image | image_url: width: 100}})"
+                        {% else %}
+                          style="background-color:{{value.label}}" 
+                        {% endif %}
+                        for="{{filter.label | handle}}-{{value.value | handle}}"></label>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </collection-filters>
     </div>
+
+    <!-- Product Grid -->
+    <div class="flex-1">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 collection_products">
+        {% for product in collection.products %}
+          {% render 'product-card', product: product %}
+        {% else %}
+          <p>No products found</p>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
 </div>
 
-
-{% render 'pagination', paginate: paginate %}
+<!-- Pagination -->
+<div class="mt-8">
+  {% render 'pagination', paginate: paginate %}
+</div>
 
 {% endpaginate %}
 
-
 {% schema %}
 {
-    "name": "Template Collection",
-    "settings": [
-        {
-            "type": "number",
-            "id": "products_per_page",
-            "label": "Products per page",
-            "default": 6
-        }
-    ]
+  "name": "Template Collection",
+  "settings": [
+    {
+      "type": "number",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "default": 8
+    }
+  ]
 }
 {% endschema %}

@@ -1,27 +1,28 @@
 {% if cart.item_count > 0 %}
-<div class="py-10 px-6">
-    <div class="mx-w-6xl mx-auto flex flex-col items-center justify-center py-10">
+<div class="py-5 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col items-center justify-center py-4">
         <div class="flex items-end justify-between w-full">
             <h1 class="text-3xl font-bold text-center">Cart</h1>
             <a href="{{routes.all_products_collection_url}}"
                 class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 inline-block mt-4">Continue Shopping</a>
         </div>
     </div>
-    <div class="mx-w-6xl mx-auto">
-       <form action="{{routes.cart_url}}" method="post" id="cart-form">
-          <table class="table-auto divide-y divide-gray-200 my-4 w-full">
-            <thead>
+    <div class="max-w-6xl mx-auto">
+        {% comment %} <form action="{{routes.cart_url}}" method="post" id="cart-form">
+            <table class="table-auto divide-y divide-gray-200 my-4 w-full text-left">
+                <thead>
                     <th class="px-4 py-2 text-sm text-gray-500">Product</th>
                     <th class="px-4 py-2 text-sm text-gray-500">Quantity</th>
                     <th class="px-4 py-2 ttext-sm text-gray-500">Total Price</th>
-            </thead>
-            <tbody>
-                {% for item in cart.items %}
+                </thead>
+                <tbody>
+                    {% for item in cart.items %}
                     <tr>
                         <td class="py-4 px-2 flex flex-col justify-center">
                             {% if item.image != blank %}
                             <a href="{{item.url}}">
-                                <img src="{{item.image | image_url:width:120}}" alt="{{item.title}}" class="w-30 h-30 object-cover object-center" width="" height="">
+                                <img src="{{item.image | image_url:width:120}}" alt="{{item.title}}"
+                                    class="w-30 h-30 object-cover object-center" width="" height="">
                             </a>
                             {% else %}
                             {{'product-1' | placeholder_svg_tag:'w-16 h-16 object-cover bg-gray-200'}}
@@ -30,45 +31,80 @@
                         <td class="py-4 px-2 flex flex-col justify-center gap-[5px]">
                             <a href="{{item.url}}" class="font-bold">{{item.title}}</a>
                             <span class="text-gray-500 text-sm">{{item.variant.title}}</span>
-                            <a href="{{routes.cart_change_url}}?line={{forloop.index}}&quantity=0" class="text-red-500 hover:text-red-700 text-sm">Remove</a>
+                            <a href="{{routes.cart_change_url}}?line={{forloop.index}}&quantity=0"
+                                class="text-red-500 hover:text-red-700 text-sm">Remove</a>
                         </td>
                         <td class="px-4 py-2 ">
-                          <input type="number" name="updates[]" id="updates_{{forloop.index}}" value="{{item.quantity}}" min="1">
+                            <input type="number" name="updates[]" id="updates_{{forloop.index}}"
+                                value="{{item.quantity}}" min="1">
                         </td>
                         <td class="px-4 py-2 ">{{item.price | money}}</td>
                     </tr>
-                {% endfor %}
-            </tbody>
-         </table>
-         <div class="flex flex-col md:flex-row justify-between">
-            <div class="w-full my-4">
-               <div class="flex flex-col items-start">
-                    <label for="cart_notes">Cart Notes</label>
-                    <textarea name="cart" id="cart_notes" class="mx-w-xl border resize-none"></textarea>
-               </div>
-            </div>
-            <div class="w-full my-4 md:w-80">
-                {% for block in section.blocks %}
-                 {% case block.type %}
-                 {% when "subtotial" %}
-                <h3 class="text-lg font-bold">Subtotal : {{cart.total_price | money}}</h3>
-                {% when "update" %}
-                <div class="my-2">
-                    <button type="submit" name="update" id="Update" class="border border-gray-600 text-gray-600 hover:bg-gray-600 hover:text-white px-4 py-2 inline-block mt-4">Update</button>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="w-full my-4">
+                    <div class="flex flex-col items-start">
+                        <label for="cart_notes">Cart Notes</label>
+                        <textarea name="cart" id="cart_notes" class="mx-w-xl border resize-none"></textarea>
+                    </div>
                 </div>
-                {% when "checkout" %}
-                <div class="my-2">
-                    <button type="submit" name="checkout" id="Checkout" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 inline-block mt-4">Checkout</button>
+                <div class="w-full my-4 md:w-80">
+                    {% for block in section.blocks %}
+                    {% case block.type %}
+                    {% when "subtotial" %}
+                    <h3 class="text-lg font-bold">Subtotal : {{cart.total_price | money}}</h3>
+                    {% when "update" %}
+                    <div class="my-2">
+                        <button type="submit" name="update" id="Update"
+                            class="border border-gray-600 text-gray-600 hover:bg-gray-600 hover:text-white px-4 py-2 inline-block mt-4">Update</button>
+                    </div>
+                    {% when "checkout" %}
+                    <div class="my-2">
+                        <button type="submit" name="checkout" id="Checkout"
+                            class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 inline-block mt-4">Checkout</button>
+                    </div>
+                    {% endcase %}
+                    {% endfor %}
                 </div>
-                {% endcase %}
-                {% endfor %}
             </div>
-         </div>
-       </form>
-    </div>  
+        </form> {% endcomment %}
+        <div class="grid grid-cols-1 gap-4">
+            {% for item in cart.items %}
+            <div class="grid grid-cols-2 gap-2">
+                <div class="flex items-center gap-5">
+                    <img src="{{item.image | image_url:width:90}}" alt="{{item.title}}"
+                        class="w-30 h-30 object-cover object-center" width="" height="">
+                    <div class="flex flex-col gap-2">
+                        <h3 class="text-lg font-bold">{{item.title}}</h3>
+                        <span
+                            class="bg-gray-500 text-white px-2 py-1 w-fit rounded-md text-sm">{{item.variant.title}}</span>
+                        <p class="text-gray-600 text-lg font-bold">{{item.price | money}}</p>
+                    </div>
+                </div>
+                <cart-page-actions class="ml-auto flex items-center gap-2" data-line="{{ forloop.index }}">
+
+                    <div class="custom-cart-drawer__item-quantity flex items-center gap-2">
+                        <button data-quantity="{{ item.quantity | minus: 1 }}" data-minus
+                            class="custom-cart-drawer__item quantity-button bg-gray-200 rounded-md p-2">{% render
+                            'icon-minus' %}</button>
+                        <span>{{ item.quantity }}</span>
+                        <button data-quantity="{{ item.quantity | plus: 1 }}" data-plus
+                            class="custom-cart-drawer__item quantity-button bg-gray-200 rounded-md p-2">{% render
+                            'icon-plus' %}</button>
+                    </div>
+                    <button data-quantity="0" data-remove class="custom-cart-drawer__item-remove text-red-500">{% render
+                        'icon-remove' %}</button>
+                </cart-page-actions>
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% else %}
-<div class="mx-w-6xl mx-auto flex flex-col items-center justify-center h-60">
+<div class="max-w-6xl mx-auto flex flex-col items-center justify-center h-60">
     <h1 class="text-3xl font-bold text-center">Cart is empty</h1>
     <a href="{{routes.all_products_collection_url}}"
         class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 inline-block mt-4">Continue Shopping</a>
@@ -80,23 +116,23 @@
 
 {% schema %}
 {
-    "name": "Cart",
-    "blocks":[
-        {
-            "type":"subtotial",
-            "name":"Subtotial",
-            "limit":1
-        },
-        {
-            "type":"update",
-            "name":"Update",
-            "limit":1
-        },
-        {
-            "type":"checkout",
-            "name":"Checkout",
-            "limit":1
-        }
-    ]
+"name": "Cart",
+"blocks":[
+{
+"type":"subtotial",
+"name":"Subtotial",
+"limit":1
+},
+{
+"type":"update",
+"name":"Update",
+"limit":1
+},
+{
+"type":"checkout",
+"name":"Checkout",
+"limit":1
+}
+]
 }
 {% endschema %}
